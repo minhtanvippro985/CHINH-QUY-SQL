@@ -1,0 +1,21 @@
+-- 1. Tạo bảng Class (Lớp học) trước
+CREATE TABLE Class (
+    class_id VARCHAR(20) PRIMARY KEY,       -- Mã lớp - Khóa chính
+    class_name VARCHAR(100) NOT NULL,      -- Tên lớp (không được để trống)
+    school_year INT NOT NULL               -- Năm học
+);
+
+-- 2. Tạo bảng Student (Sinh viên) sau
+CREATE TABLE Student (
+    student_id VARCHAR(20) PRIMARY KEY,     -- Mã sinh viên - Khóa chính
+    full_name VARCHAR(100) NOT NULL,       -- Họ tên
+    birth_date DATE,                       -- Ngày sinh
+    class_id VARCHAR(20),                  -- Mã lớp học thuộc về
+    
+    -- Thiết lập mối quan hệ Khóa ngoại liên kết tới bảng Class
+    CONSTRAINT fk_student_class 
+        FOREIGN KEY (class_id) 
+        REFERENCES Class(class_id)
+        ON DELETE SET NULL                 -- Nếu lớp bị xóa, mã lớp của SV sẽ về NULL
+        ON UPDATE CASCADE                  -- Nếu mã lớp thay đổi, tự động cập nhật ở bảng SV
+);
